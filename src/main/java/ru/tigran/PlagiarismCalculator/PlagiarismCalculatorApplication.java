@@ -1,39 +1,40 @@
 package ru.tigran.PlagiarismCalculator;
 
 import org.antlr.v4.gui.TreeViewer;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.tigran.PlagiarismCalculator.antlr.grammars.cpp.CPP14Lexer;
-import ru.tigran.PlagiarismCalculator.antlr.grammars.cpp.CPP14Parser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 @SpringBootApplication
 public class PlagiarismCalculatorApplication {
 
-    public static void main(String[] args) throws IOException {
-        /*SpringApplication.run(PlagiarismCalculatorApplication.class, args);*/
+    public static void main(String[] args) throws IOException, InterruptedException {
+        File inputDir = new File("D:\\Projects\\PlagiarismExample");
+        File[] files = inputDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".cpp"));
 
-        CPP14Lexer lexer1 = new CPP14Lexer(CharStreams.fromFileName("D:\\Projects\\PlagiarismExample\\first.cpp"));
-        CPP14Lexer lexer2 = new CPP14Lexer(CharStreams.fromFileName("D:\\Projects\\PlagiarismExample\\second.cpp"));
+        for (int i = 0; i < files.length - 1; ++i){
+            for (int j = i+1; j < files.length; ++j) {
+                CPP14AnalyzeWorker analyzeWorker = CPP14AnalyzeWorker.fromFiles(files[i], files[j]);
+                new Thread(analyzeWorker).start();
+            }
+        }
 
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer2);
-        tokenStream.fill();
-        CPP14Parser parser = new CPP14Parser(tokenStream);
-        ParseTree tree = parser.translationUnit();
+        /*WalkTree(tree);*/
+        /*VisualizeTree(tree, parser);*/
+    }
 
-        TreeViewer viewer = new TreeViewer(Arrays.asList(
-                parser.getRuleNames()), tree);
+    private static void WalkTree(ParseTree tree) {
+        ParseTreeWalker.DEFAULT.walk(new TreeWalker(), tree);
+    }
+    private static void VisualizeTree(ParseTree tree, Parser parser){
+        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
         viewer.setScale(1);
         viewer.setAutoscrolls(true);
 
@@ -47,9 +48,7 @@ public class PlagiarismCalculatorApplication {
         frame.setContentPane(scrollPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
-
-        ParseTreeWalker.DEFAULT.walk(new TreeWalker(), tree);
     }
 }
