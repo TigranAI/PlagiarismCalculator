@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: plagiarism-calc
+  cloud:
+    config:
+      uri: http://localhost:8888/

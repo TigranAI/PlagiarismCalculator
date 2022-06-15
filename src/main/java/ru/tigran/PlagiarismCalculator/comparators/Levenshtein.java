@@ -1,4 +1,4 @@
-package ru.tigran.PlagiarismCalculator.Comparators;
+package ru.tigran.PlagiarismCalculator.comparators;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +16,6 @@ public class Levenshtein<T> {
         int m = a1.size();
         int n = a2.size();
 
-        // matrix to store differences
         int[][] deltaM = new int[m+1][n+1];
 
         for(int i = 1;i <= m; i++)

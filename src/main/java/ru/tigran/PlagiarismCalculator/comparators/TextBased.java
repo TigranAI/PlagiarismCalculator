@@ -1,4 +1,4 @@
-package ru.tigran.PlagiarismCalculator.Comparators;
+package ru.tigran.PlagiarismCalculator.comparators;
 
 import java.util.ArrayList;
 import java.util.Comparator;

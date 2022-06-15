@@ -1,4 +1,4 @@
-package ru.tigran.PlagiarismCalculator.Comparators;
+package ru.tigran.PlagiarismCalculator.comparators;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RuleContext;

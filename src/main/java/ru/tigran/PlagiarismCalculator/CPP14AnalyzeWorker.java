@@ -4,9 +4,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import ru.tigran.PlagiarismCalculator.Comparators.TextBased;
-import ru.tigran.PlagiarismCalculator.Comparators.TokenBased;
-import ru.tigran.PlagiarismCalculator.Comparators.TreeBased;
+import ru.tigran.PlagiarismCalculator.comparators.TextBased;
+import ru.tigran.PlagiarismCalculator.comparators.TokenBased;
+import ru.tigran.PlagiarismCalculator.comparators.TreeBased;
 import ru.tigran.PlagiarismCalculator.antlr.grammars.cpp.CPP14Lexer;
 import ru.tigran.PlagiarismCalculator.antlr.grammars.cpp.CPP14Parser;
 
@@ -32,7 +32,6 @@ public class CPP14AnalyzeWorker implements Runnable {
             textBased = TextBased.getPercentage(sourceCode1, sourceCode2),
             tokenBased = TokenBased.getPercentage(tokens1, tokens2),
             treeBased = TreeBased.getPercentage(parserRuleContext1, parserRuleContext2);
-
 
         long stop = ZonedDateTime.now().toInstant().toEpochMilli();
 
